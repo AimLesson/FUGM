@@ -2,21 +2,22 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\BeritaResource\Pages;
-use App\Models\Berita;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\RichEditor;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Berita;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\DateTimePicker;
+use App\Filament\Resources\BeritaResource\Pages;
 
 class BeritaResource extends Resource
 {
@@ -25,6 +26,16 @@ class BeritaResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
 
     protected static ?string $pluralLabel = 'Berita';
+
+    public static function canViewAny(): bool
+    {
+        return Auth::user()->role !== 'user';
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()->role !== 'user';
+    }
 
     public static function form(Form $form): Form
     {

@@ -16,6 +16,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
+use Illuminate\Support\Facades\Auth;
 
 class UserResource extends Resource
 {
@@ -24,6 +25,15 @@ class UserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     protected static ?string $pluralLabel = 'Daftar Pengguna';
+    public static function canViewAny(): bool
+    {
+        return Auth::user()->role !== 'user';
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return Auth::user()->role !== 'user';
+    }
 
     public static function form(Form $form): Form
     {
